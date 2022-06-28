@@ -52,7 +52,7 @@
         </div>
 
         {% if user.is_authenticated %}
-        <form id="questionform" action="point to a submit view" method="post">
+        <form id="questionform" action="{% url 'onlinecourse:submit' course.id %}" method="post">
             {% if course.question_set.all %}
             <p></p>
             <p></p>

@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'onlinecourse/course.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
 
- <nav class="navbar navbar-light bg-light">
+<nav class="navbar navbar-light bg-light">
     <div class="container-fluid">
         <div class="navbar-header">
               <a class="navbar-brand" href="{% url 'onlinecourse:index' %}">Home</a>
@@ -36,19 +37,53 @@
 </nav>
 
 <div class="container-fluid">
-    {% if grade > 80 %}
+    {% if exam_grade > 80 %}
     <div class="alert alert-success">
-       <!--HINT Display passed info -->
+        <strong>Congratulations, {{ user.first_name }}!</strong> You have passed the exam and completed the course with score {{ exam_grade }} / 100
     </div>
         {% else %}
         <div class="alert alert-danger">
-            <!--HINT Display failed info -->
+            <strong>Failed</strong> Sorry, {{ user.first_name }}! You have failed exame with score {{ exam_grade }} / 100
         </div>
         <a class="btn btn-link text-danger" href="{% url 'onlinecourse:course_details' course.id %}">Re-test</a>
         {% endif %}
         <div class="card-columns-vertical mt-1">
-        <h5 class="">Exam results</h5>
-            <!--HINT Display exam results-->
+            <h5 class="">Exam results</h5>
+            <div class="card-columns-vertical">
+                {% for question in course.question_set.all %}
+                <div class="card">
+                    <div class="card-header">
+                        <h5>{{ question.question_text}}</h5>
+                    </div>
+                    <div class="card-body">
+                    {% for choice in question.choice_set.all %}
+                        <!-- Choice selected? -->
+                        {% if choice.id in selected_ids %}
+                        <!-- Selected: yes -->
+                            <!-- Choice correct? -->
+                            {% if choice.is_correct == True %}
+                                <!-- Correct: yes -->
+                                <p style="color:rgb(49, 199, 62);">Correct answer: {{ choice.content }}</p>
+                            {% else %}
+                                <!-- Correct: no -->
+                                <p style="color:rgb(238, 9, 9);">Inorrect answer: {{ choice.content }}</p>
+                            {% endif %}
+                        {% else %}
+                        <!-- Selected: no -->
+                            <!-- Choice correct? -->
+                            {% if choice.is_correct == True %}
+                                <!-- Correct: yes -->
+                                <p style="color:rgb(239, 205, 13);">Not Selected: {{ choice.content }}</p>
+                            {% else %}
+                                <!-- Correct: no -->
+                                <p>{{ choice.content }}</p>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 </body>

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-     {% load static %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'onlinecourse/course.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -50,12 +51,10 @@
                 </div>
             {% endfor %}
         </div>
-
+        <p></p>
         {% if user.is_authenticated %}
         <form id="questionform" action="{% url 'onlinecourse:submit' course.id %}" method="post">
             {% if course.question_set.all %}
-            <p></p>
-            <p></p>
             <input class="btn btn-info btn-block" type="button" value="Start Exam" data-toggle="collapse" data-target="#exam">
             <div id="exam" class="collapse">
                 <div class="card-columns-vertical">
@@ -80,16 +79,12 @@
                 <input class="btn btn-success btn-block" type="submit" value="Submit">
             </div>
             {% else %}
-            <p></p>
             <h5 class="card-title">*There is no Exam available for this course.<span class="text-success"></h5>
             {% endif %}
         </form>
 
         {% endif %}
-
-
-
-
+        <p></p>
     </div>
 </body>
 </html>
